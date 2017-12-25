@@ -42,6 +42,7 @@ class NotificationsContainer extends React.Component<INotificationsContainerProp
     render() {
         return (
             <Page
+                section="home"
                 name="notifications"
                 payload={this.props.notifications || []}
             />

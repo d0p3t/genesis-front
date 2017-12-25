@@ -87,6 +87,7 @@ const Button: React.SFC<IButtonProps & InjectedIntlProps> = (props, context: IBu
 
     return (
         <TxButton
+            section={context.protypo.props.section}
             vde={context.vde}
             className={props.class}
             contractName={props.contract}

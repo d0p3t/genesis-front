@@ -15,27 +15,33 @@
 // along with the apla-front library. If not, see <http://www.gnu.org/licenses/>.
 
 import * as React from 'react';
-import Protypo from 'containers/Widgets/Protypo';
-import { IProtypoElement } from 'components/Protypo/Protypo';
 
-import DocumentTitle from 'components/DocumentTitle';
-
-export interface IPageProps {
+export interface IPageLinkProps {
     section: string;
+    page: string;
     vde?: boolean;
-    name: string;
-    payload: IProtypoElement[];
+    className?: string;
+    navigatePage: (params: { section: string, name: string, params: { [key: string]: any }, vde?: boolean }) => void;
 }
 
-const Page: React.SFC<IPageProps> = (props) => (
-    <DocumentTitle title={props.name}>
-        <Protypo
-            {...props}
-            section={props.section}
-            context="page"
-            vde={props.vde}
-        />
-    </DocumentTitle>
-);
+const PageLink: React.SFC<IPageLinkProps> = props => {
+    const onNavigate = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        props.navigatePage({
+            section: props.section,
+            name: props.page,
+            params: null,
+            vde: props.vde
+        });
+    };
 
-export default Page;
+    const navigateUrl = `/${props.section}/${props.page}${props.vde ? '?vde=true' : ''}`;
+
+    return (
+        <a href={navigateUrl} className={props.className} onClick={onNavigate}>
+            {props.children}
+        </a>
+    );
+};
+
+export default PageLink;

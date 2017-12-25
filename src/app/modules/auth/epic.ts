@@ -91,6 +91,7 @@ export const switchEcosystemEpic: Epic<Action, IRootState> =
         })
         .flatMap(payload =>
             Observable.concat(
+                //FIXME
                 Observable.of(reset.started(null)),
                 Observable.of(actions.switchEcosystem.done({
                     params: payload.ecosystem_id,

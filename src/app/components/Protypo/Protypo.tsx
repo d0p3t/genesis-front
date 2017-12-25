@@ -28,11 +28,12 @@ export interface IProtypoProps {
     vde?: boolean;
     editable?: boolean;
     wrapper?: JSX.Element;
+    section: string;
     context: string;
     page: string;
     payload: IProtypoElement[];
-    menuPush: (params: { name: string, content: IProtypoElement[] }) => void;
-    navigatePage: (params: { name: string, params: any, vde?: boolean }) => void;
+    menuPush: (params: { section: string, name: string, content: IProtypoElement[], vde?: boolean }) => void;
+    navigatePage: (params: { section: string, name: string, params: any, vde?: boolean }) => void;
     navigate: (url: string) => void;
     changePage?: any;
     addTag?: any;
@@ -83,14 +84,13 @@ class Protypo extends React.Component<IProtypoProps> {
             menuPush: this._menuPushBind,
             navigatePage: this._navigatePageBind,
             navigate: this._navigateBind,
-            vde: this.props.vde
+            vde: this.props.vde,
+            section: this.props.section
         };
     }
-
     getCurrentPage() {
         return this.props.page;
     }
-
     setTitle(title: string) {
         this._title = title;
     }
@@ -247,6 +247,7 @@ class Protypo extends React.Component<IProtypoProps> {
 }
 
 (Protypo as any).childContextTypes = {
+    section: propTypes.string.isRequired,
     protypo: propTypes.object.isRequired,
     navigatePage: propTypes.func.isRequired,
     navigate: propTypes.func.isRequired,

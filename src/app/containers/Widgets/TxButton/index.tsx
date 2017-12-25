@@ -25,6 +25,7 @@ import { alertShow, navigatePage } from 'modules/content/actions';
 import TxButton, { ITxButtonConfirm } from 'components/TxButton';
 
 interface ITxButtonContainerProps {
+    section: string;
     vde?: boolean;
     className?: string;
     contractName?: string;
@@ -135,6 +136,7 @@ class TxButtonContainer extends React.Component<ITxButtonContainerProps & ITxBut
         }
         else {
             this.props.navigatePage({
+                section: this.props.section,
                 name: page,
                 params: pageParams,
                 vde: this.props.vde

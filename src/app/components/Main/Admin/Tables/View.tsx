@@ -17,9 +17,9 @@
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { ITableResponse, IListResponse } from 'lib/api';
 
+import Routing from 'components/Routing';
 import DocumentTitle from 'components/DocumentTitle';
 import Heading from 'components/Heading';
 import Money from 'components/Money';
@@ -73,9 +73,9 @@ const View: React.SFC<IViewProps> = (props) => (
             <div className="content-wrapper">
                 <ol className="breadcrumb">
                     <li>
-                        <Link to={props.vde ? '/vde/tables' : '/admin/tables'}>
+                        <Routing.SystemLink page={props.vde ? '/vde/tables' : '/admin/tables'}>
                             <FormattedMessage id="admin.tables" defaultMessage="Tables" />
-                        </Link>
+                        </Routing.SystemLink>
                     </li>
                     <li>
                         {props.tableName}
@@ -115,9 +115,9 @@ const View: React.SFC<IViewProps> = (props) => (
                                                                 <FormattedMessage id="admin.tables.unchanged" defaultMessage="Unchanged" />
                                                             </span>
                                                         ) : (
-                                                            <Link className="btn btn-primary" to={`/admin/tables/${props.table.name}/${row.id}/history`}>
+                                                            <Routing.SystemLink className="btn btn-primary" page={`/admin/tables/${props.table.name}/${row.id}/history`}>
                                                                 <FormattedMessage id="admin.tables.history" defaultMessage="History" />
-                                                            </Link>
+                                                            </Routing.SystemLink>
                                                         )
                                                     }
                                                 </td>

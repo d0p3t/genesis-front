@@ -15,27 +15,36 @@
 // along with the apla-front library. If not, see <http://www.gnu.org/licenses/>.
 
 import * as React from 'react';
-import Protypo from 'containers/Widgets/Protypo';
-import { IProtypoElement } from 'components/Protypo/Protypo';
+import { navigatePage } from 'modules/content/actions';
+import { connect } from 'react-redux';
+import { IRootState } from 'modules';
 
-import DocumentTitle from 'components/DocumentTitle';
+import Routing from 'components/Routing';
 
-export interface IPageProps {
+export interface IPageLinkContainerProps {
     section: string;
+    page: string;
     vde?: boolean;
-    name: string;
-    payload: IProtypoElement[];
+    className?: string;
 }
 
-const Page: React.SFC<IPageProps> = (props) => (
-    <DocumentTitle title={props.name}>
-        <Protypo
-            {...props}
-            section={props.section}
-            context="page"
-            vde={props.vde}
-        />
-    </DocumentTitle>
+interface IPageLinkContainerState {
+}
+
+interface IPageLinkContainerDispatch {
+    navigatePage: typeof navigatePage.started;
+}
+
+const PageLinkContainer: React.SFC<IPageLinkContainerProps & IPageLinkContainerState & IPageLinkContainerDispatch> = props => (
+    <Routing.PageLink {...props} />
 );
 
-export default Page;
+const mapStateToProps = (state: IRootState): IPageLinkContainerState => ({
+
+});
+
+const mapDispatchToProps = {
+    navigatePage: navigatePage.started
+};
+
+export default connect<IPageLinkContainerState, IPageLinkContainerDispatch, IPageLinkContainerProps>(mapStateToProps, mapDispatchToProps)(PageLinkContainer);

@@ -26,9 +26,15 @@ export interface IMenuGroupProps {
     'childrenTree'?: IProtypoElement[];
 }
 
-const MenuGroup: React.SFC<IMenuGroupProps> = (props, context) => (
+interface IMenuGroupContext {
+    vde?: boolean;
+    section: string;
+    menuPush: (params: { section: string, vde: boolean, name: string, content: IProtypoElement[] }) => void;
+}
+
+const MenuGroup: React.SFC<IMenuGroupProps> = (props, context: IMenuGroupContext) => (
     <StyledLinkButton>
-        <a href="#" onClick={() => context.menuPush({ name: props.title, content: props.childrenTree })}>
+        <a href="#" onClick={() => context.menuPush({ section: context.section, vde: context.vde, name: props.title, content: props.childrenTree })}>
             <div className="link-body">
                 {props.icon && (<em className={`icon ${props.icon}`} />)}
                 <span>{props.title}</span>
@@ -38,6 +44,7 @@ const MenuGroup: React.SFC<IMenuGroupProps> = (props, context) => (
 );
 
 MenuGroup.contextTypes = {
+    section: propTypes.string.isRequired,
     menuPush: propTypes.func.isRequired
 };
 

@@ -16,10 +16,10 @@
 
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { columnTypes } from './Create';
 import { ITableResponse } from 'lib/api';
 
+import Routing from 'components/Routing';
 import DocumentTitle from 'components/DocumentTitle';
 import Heading from 'components/Heading';
 import ValidatedContractForm from 'containers/Widgets/ValidatedContractForm';
@@ -81,22 +81,22 @@ export default class EditColumn extends React.Component<IEditColumnProps, IEditC
                     <div className="content-wrapper">
                         <ol className="breadcrumb">
                             <li>
-                                <Link to={this.props.vde ? '/vde/tables' : '/admin/tables'}>
+                                <Routing.SystemLink page={this.props.vde ? '/vde/tables' : '/admin/tables'}>
                                     <FormattedMessage id="admin.tables" defaultMessage="Tables" />
-                                </Link>
+                                </Routing.SystemLink>
                             </li>
                             {this.props.table && (
                                 <li>
-                                    <Link to={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}`}>
+                                    <Routing.SystemLink page={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}`}>
                                         {this.props.table.name}
-                                    </Link>
+                                    </Routing.SystemLink>
                                 </li>
                             )}
                             {this.props.table && (
                                 <li>
-                                    <Link to={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}/edit`}>
+                                    <Routing.SystemLink page={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}/edit`}>
                                         <FormattedMessage id="admin.tables.edit" defaultMessage="Edit" />
-                                    </Link>
+                                    </Routing.SystemLink>
                                 </li>
                             )}
                             <li>

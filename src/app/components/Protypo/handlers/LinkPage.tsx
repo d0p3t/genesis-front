@@ -30,13 +30,14 @@ export interface ILinkPageProps {
 interface ILinkPageContext {
     vde?: boolean;
     protypo: Protypo;
-    navigatePage: (params: { name: string, params: any, vde?: boolean }) => void;
+    navigatePage: (params: { section: string, name: string, params: any, vde?: boolean }) => void;
 }
 
 const LinkPage: React.SFC<ILinkPageProps> = (props, context: ILinkPageContext) => {
     const onNavigate = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         context.navigatePage({
+            section: context.protypo.props.section,
             name: props.page,
             params: context.protypo.resolveParams(props.pageparams),
             vde: context.vde

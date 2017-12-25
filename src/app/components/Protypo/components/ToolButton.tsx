@@ -29,12 +29,13 @@ export interface IToolButtonProps {
 interface IToolButtonContext {
     protypo: Protypo;
     vde?: boolean;
-    navigatePage: (params: { name: string, params: any, vde?: boolean }) => void;
+    navigatePage: (params: { section: string, name: string, params: any, vde?: boolean }) => void;
 }
 
 const ToolButton: React.SFC<IToolButtonProps> = (props, context: IToolButtonContext) => {
     const onClick = () => {
         context.navigatePage({
+            section: context.protypo.props.section,
             name: props.page,
             params: context.protypo.resolveParams(props.pageparams),
             vde: context.vde

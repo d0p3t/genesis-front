@@ -27,7 +27,7 @@ interface IEditPageProps {
     tabData: any;
     // page: { id: string, name: string, menu: string, conditions: string, value: string };
     menus: { id: string, name: string, conditions: string, value: string }[];
-    navigatePage?: (params: { name: string, params?: any }) => void;
+    navigatePage?: (params: { section: string, name: string, params?: any }) => void;
     getPage?: typeof getPage.started;
 
 }

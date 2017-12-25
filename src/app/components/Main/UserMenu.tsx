@@ -18,11 +18,11 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import styled from 'styled-components';
 import onClickOutside from 'react-onclickoutside';
-import { Link } from 'react-router-dom';
 import { IStoredKey } from 'lib/storage';
 import imgAvatar from 'images/avatar.svg';
 import { FormattedMessage } from 'react-intl';
 
+import Routing from 'components/Routing';
 import Dropdown from 'components/Animation/Dropdown';
 
 const StyledUserMenu = styled.div`
@@ -208,14 +208,14 @@ class UserMenu extends React.Component<IUserMenuProps, IUserMenuState> {
                                 </button>
                             </li>
                             <li>
-                                <Link to="/backup">
+                                <Routing.SystemLink page="/backup">
                                     <button onClick={this.onCollapseToggle.bind(this, true)}>
                                         <em className="icon icon-shield text-muted" />
                                         <span>
                                             <FormattedMessage id="general.account.backup" defaultMessage="Backup account" />
                                         </span>
                                     </button>
-                                </Link>
+                                </Routing.SystemLink>
                             </li>
                             <li>
                                 <button onClick={this.props.onLogout}>

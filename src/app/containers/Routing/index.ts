@@ -14,28 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the apla-front library. If not, see <http://www.gnu.org/licenses/>.
 
-import * as React from 'react';
-import Protypo from 'containers/Widgets/Protypo';
-import { IProtypoElement } from 'components/Protypo/Protypo';
+import PageLink from './PageLink';
+import SectionLink from './SectionLink';
+import SystemLink from './SystemLink';
 
-import DocumentTitle from 'components/DocumentTitle';
-
-export interface IPageProps {
-    section: string;
-    vde?: boolean;
-    name: string;
-    payload: IProtypoElement[];
-}
-
-const Page: React.SFC<IPageProps> = (props) => (
-    <DocumentTitle title={props.name}>
-        <Protypo
-            {...props}
-            section={props.section}
-            context="page"
-            vde={props.vde}
-        />
-    </DocumentTitle>
-);
-
-export default Page;
+export default {
+    PageLink,
+    SectionLink,
+    SystemLink
+};

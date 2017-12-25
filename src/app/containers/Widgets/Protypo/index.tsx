@@ -28,6 +28,7 @@ export interface IProtypoContainerProps {
     editable?: boolean;
     wrapper?: JSX.Element;
     context: string;
+    section: string;
     payload: IProtypoElement[];
     changePage?: any;
     setTagCanDropPosition?: any;
@@ -51,9 +52,13 @@ const ProtypoContainer: React.SFC<IProtypoContainerState & IProtypoContainerDisp
     <Protypo {...props} />
 );
 
-const mapStateToProps = (state: IRootState) => ({
-    page: state.content.page && state.content.page.name
-});
+const mapStateToProps = (state: IRootState, ownProps: IProtypoContainerProps): IProtypoContainerState => {
+    const pages = state.content.sections[ownProps.section].pages;
+
+    return {
+        page: pages.length && pages[pages.length - 1].page.name
+    };
+};
 
 const mapDispatchToProps = {
     navigatePage: navigatePage.started,

@@ -23,14 +23,27 @@ import { IProtypoElement } from 'components/Protypo/Protypo';
 import Page from 'components/Main/Page';
 
 export interface IPageContainerProps {
-    match?: { params: { [key: string]: string, pageName: string } };
+    match?: {
+        params: {
+            section: string;
+            page: string;
+        };
+    };
     location?: {
-        state: { params?: { [key: string]: any } };
+        search: string;
+        state: {
+            reload?: boolean;
+            params?: { [key: string]: any };
+        };
     };
 }
 
 interface IPageContainerState {
-    page: { name: string, content: IProtypoElement[], error?: string };
+    page: {
+        name: string;
+        content: IProtypoElement[];
+        error?: string;
+    };
     pending: boolean;
 }
 
@@ -48,10 +61,13 @@ class PageContainer extends React.Component<IPageContainerProps & IPageContainer
     }
 
     renderPage(props: IPageContainerProps & IPageContainerState & IPageContainerDispatch) {
-        const isVDE = props.match.params && props.match.params['0'] === 'vde';
-        if (!props.pending && (!props.page || props.page.name !== props.match.params.pageName)) {
+        const params = new URLSearchParams(props.location.search);
+        const isVDE = params.get('vde') === 'true';
+
+        if (!props.pending && (!props.page || (props.page.name !== props.match.params.page || this.props.match.params.section !== props.match.params.section))) {
             props.renderPage({
-                name: props.match.params.pageName,
+                section: props.match.params.section,
+                name: props.match.params.page,
                 params: props.location.state && props.location.state.params,
                 vde: isVDE
             });
@@ -60,9 +76,9 @@ class PageContainer extends React.Component<IPageContainerProps & IPageContainer
 
     render() {
         const isVDE = this.props.match.params && this.props.match.params['0'] === 'vde';
-
         return (
             <Page
+                section={this.props.match.params.section}
                 vde={isVDE}
                 name={this.props.page && this.props.page.name}
                 payload={this.props.page && this.props.page.content}
@@ -71,10 +87,14 @@ class PageContainer extends React.Component<IPageContainerProps & IPageContainer
     }
 }
 
-const mapStateToProps = (state: IRootState) => ({
-    page: state.content.page,
-    pending: state.content.pending
-});
+const mapStateToProps = (state: IRootState, ownProps: IPageContainerProps): IPageContainerState => {
+    const pages = state.content.sections[ownProps.match.params.section].pages;
+
+    return {
+        page: pages.length ? pages[pages.length - 1].page : null,
+        pending: state.content.sections[ownProps.match.params.section].pending
+    };
+};
 
 const mapDispatchToProps = {
     renderPage: renderPage.started

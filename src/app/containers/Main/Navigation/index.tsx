@@ -24,6 +24,7 @@ import Navigation from 'components/Main/Navigation';
 
 interface INavigationContainerProps {
     topOffset: number;
+    section: string;
 }
 
 interface INavigationContainerState {
@@ -35,6 +36,7 @@ interface INavigationContainerState {
         name: string;
         content: IProtypoElement[];
     }[];
+    defaultMenu: string;
 }
 
 interface INavigationContainerDispatch {
@@ -47,13 +49,17 @@ const NavigationContainer: React.SFC<INavigationContainerProps & INavigationCont
     <Navigation {...props} />
 );
 
-const mapStateToProps = (state: IRootState) => ({
-    isEcosystemOwner: state.auth.isEcosystemOwner,
-    preloading: state.content.preloading,
-    visible: state.content.navigationVisible,
-    width: state.content.navigationWidth,
-    menus: state.content.menus
-});
+const mapStateToProps = (state: IRootState, ownProps: INavigationContainerProps) => {
+    const section = state.content.sections[ownProps.section];
+    return {
+        isEcosystemOwner: state.auth.isEcosystemOwner,
+        preloading: state.content.preloading,
+        visible: state.content.navigationVisible,
+        width: state.content.navigationWidth,
+        menus: section ? section.menus : [],
+        defaultMenu: section && section.defaultMenu
+    };
+};
 
 const mapDispatchToProps = {
     menuPop,

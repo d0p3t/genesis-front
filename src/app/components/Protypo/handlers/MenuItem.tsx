@@ -19,6 +19,7 @@ import * as classnames from 'classnames';
 import styled from 'styled-components';
 import * as propTypes from 'prop-types';
 
+import Routing from 'containers/Routing';
 import Protypo, { IParamsSpec } from '../Protypo';
 
 export interface IMenuItemProps {
@@ -80,15 +81,14 @@ export const StyledLinkButton = styled.div`
     }
 `;
 
-interface ILinkButtonContext {
+interface IMenuItemContext {
     vde?: boolean;
     protypo: Protypo;
     navigate: (url: string) => void;
-    navigatePage: (params: { name: string, params: any, vde?: boolean }) => void;
 }
 
 // TODO: Missing page params
-const LinkButton: React.SFC<IMenuItemProps> = (props, context: ILinkButtonContext) => {
+const LinkButton: React.SFC<IMenuItemProps> = (props, context: IMenuItemContext) => {
     const isActive = context.protypo.getCurrentPage() === props.page;
     const classes = classnames({
         active: isActive
@@ -101,50 +101,29 @@ const LinkButton: React.SFC<IMenuItemProps> = (props, context: ILinkButtonContex
         </div>
     );
 
-    const onNavigate = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        if (props._systemPageHook) {
-            context.navigate(props._systemPageHook);
-        }
-        else {
-            context.navigatePage({
-                name: props.page,
-                params: context.protypo.resolveParams(props.params),
-                vde:
-                    props.vde === 'true' ? true :
-                        props.vde === 'false' ? false :
-                            context.vde
-            });
-        }
-        return false;
-    };
-
-    const navigateUrl =
-        !props.page ? '' :
-            props.vde === 'true' ? `/vde/page/${props.page}` :
-                props.vde === 'false' ? `/page/${props.page}` :
-                    `/${context.vde ? 'vde/page' : 'page'}/${props.page}`;
+    const isVDELink = props.vde === 'true' ?
+        true : props.vde === 'false' ?
+            false : context.vde;
 
     return (
         <StyledLinkButton className={classes}>
             <div className="link-active-decorator" />
-            {props._systemPageHook || props.page ?
-                (
-                    <a href={props._systemPageHook ? props._systemPageHook : navigateUrl} onClick={onNavigate}>
-                        {linkBody}
-                    </a>
-                ) : (
-                    <a href="#">
-                        {linkBody}
-                    </a>
-                )}
+            {props._systemPageHook && (
+                <Routing.SystemLink page={props._systemPageHook}>
+                    {linkBody}
+                </Routing.SystemLink>
+            )}
+            {props.page && (
+                <Routing.PageLink section={context.protypo.props.section} page={props.page} vde={isVDELink}>
+                    {linkBody}
+                </Routing.PageLink>
+            )}
         </StyledLinkButton>
     );
 };
 
 LinkButton.contextTypes = {
     protypo: propTypes.object.isRequired,
-    navigatePage: propTypes.func.isRequired,
     navigate: propTypes.func.isRequired,
     vde: propTypes.bool
 };

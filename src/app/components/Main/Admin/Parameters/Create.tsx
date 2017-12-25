@@ -17,6 +17,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import Routing from 'components/Routing';
 import Wrapper from 'components/Wrapper';
 import ParameterEditor from './ParameterEditor';
 
@@ -81,17 +82,14 @@ class Create extends React.Component<ICreateProps, ICreateState> {
                     )
                 }}
                 breadcrumbs={[
-                    {
-                        url: this.props.vde ? '/vde/parameters' : '/admin/parameters',
-                        title: (
+                    (
+                        <Routing.SystemLink page={this.props.vde ? '/vde/parameters' : '/admin/parameters'}>
                             <FormattedMessage id="admin.parameters" defaultMessage="Ecosystem parameters" />
-                        )
-                    },
-                    {
-                        title: (
-                            <FormattedMessage id="admin.create" defaultMessage="Create" />
-                        )
-                    }
+                        </Routing.SystemLink>
+                    ),
+                    (
+                        <FormattedMessage id="admin.create" defaultMessage="Create" />
+                    )
                 ]}
             >
                 <ParameterEditor

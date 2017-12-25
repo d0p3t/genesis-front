@@ -124,14 +124,16 @@ export interface INavigationProps {
     visible: boolean;
     topOffset: number;
     width: number;
+    section: string;
+    defaultMenu: string;
     menus: {
         name: string;
         content: IProtypoElement[];
         vde?: boolean;
     }[];
-    menuPop: () => void;
-    menuPush: (menu: { name: string, vde?: boolean, content: IProtypoElement[] }) => void;
-    ecosystemInit: (nullArg: null) => void;
+    menuPop: (params: { section: string }) => void;
+    menuPush: (params: { section: string, name: string, vde?: boolean, content: IProtypoElement[] }) => void;
+    ecosystemInit: (params: { section: string }) => void;
 }
 
 class Navigation extends React.Component<INavigationProps & InjectedIntlProps> {
@@ -144,14 +146,17 @@ class Navigation extends React.Component<INavigationProps & InjectedIntlProps> {
     }
 
     preloadMenu(props: INavigationProps) {
-        if (!props.preloading && !props.menus.find(l => l.name === 'default_menu')) {
-            this.props.ecosystemInit(null);
+        if (!props.preloading && !props.menus.find(l => l.name === props.defaultMenu)) {
+            this.props.ecosystemInit({
+                section: this.props.section
+            });
         }
     }
 
     // TODO: This function is a stub. In future, admin menu will be reworked to show through the API call
     onDeveloperTools() {
         const menuStack = {
+            section: this.props.section,
             name: 'adminTools',
             content: [
                 {
@@ -230,6 +235,7 @@ class Navigation extends React.Component<INavigationProps & InjectedIntlProps> {
     // TODO: This function is a stub. In future, admin menu will be reworked to show through the API call
     onVDETools() {
         this.props.menuPush({
+            section: this.props.section,
             name: 'vde_tools',
             vde: false,
             content: [
@@ -301,7 +307,7 @@ class Navigation extends React.Component<INavigationProps & InjectedIntlProps> {
                         <StackGroup
                             items={this.props.menus.map((menu, index) => (
                                 <StyledMenuContent>
-                                    <StyledBackButton onClick={() => this.props.menuPop()} disabled={1 >= this.props.menus.length} className={index === 0 ? 'disabled' : ''}>
+                                    <StyledBackButton onClick={() => this.props.menuPop({ section: this.props.section })} disabled={1 >= this.props.menus.length} className={index === 0 ? 'disabled' : ''}>
                                         <div>
                                             {index > 0 && (
                                                 <span className="icon">
@@ -312,6 +318,7 @@ class Navigation extends React.Component<INavigationProps & InjectedIntlProps> {
                                         </div>
                                     </StyledBackButton>
                                     <Protypo
+                                        section={this.props.section}
                                         vde={menu.vde}
                                         context="menu"
                                         payload={menu.content}

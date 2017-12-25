@@ -15,27 +15,14 @@
 // along with the apla-front library. If not, see <http://www.gnu.org/licenses/>.
 
 import * as React from 'react';
-import Protypo from 'containers/Widgets/Protypo';
-import { IProtypoElement } from 'components/Protypo/Protypo';
 
-import DocumentTitle from 'components/DocumentTitle';
-
-export interface IPageProps {
-    section: string;
-    vde?: boolean;
-    name: string;
-    payload: IProtypoElement[];
+export interface ISystemLinkProps {
+    className?: string;
+    page: string;
 }
 
-const Page: React.SFC<IPageProps> = (props) => (
-    <DocumentTitle title={props.name}>
-        <Protypo
-            {...props}
-            section={props.section}
-            context="page"
-            vde={props.vde}
-        />
-    </DocumentTitle>
+const SystemLink: React.SFC<ISystemLinkProps> = props => (
+    <a href="#" className={props.className}>DUMMY LINK</a>
 );
 
-export default Page;
+export default SystemLink;

@@ -17,6 +17,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import Routing from 'components/Routing';
 import Wrapper from 'components/Wrapper';
 import LocaleEditor from './LocaleEditor';
 
@@ -147,15 +148,12 @@ class Edit extends React.Component<IEditProps, IEditState> {
                     )
                 }}
                 breadcrumbs={[
-                    {
-                        url: this.props.vde ? '/vde/languages' : '/admin/languages',
-                        title: (
+                    (
+                        <Routing.SystemLink page={this.props.vde ? '/vde/languages' : '/admin/languages'}>
                             <FormattedMessage id="admin.languages" defaultMessage="Language resources" />
-                        )
-                    },
-                    {
-                        title: this.props.translation.name
-                    }
+                        </Routing.SystemLink>
+                    ),
+                    this.props.translation.name
                 ]}
             >
                 <LocaleEditor

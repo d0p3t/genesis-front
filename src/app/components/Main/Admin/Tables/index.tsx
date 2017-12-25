@@ -17,9 +17,9 @@
 import * as React from 'react';
 import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
 import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { ITablesResponse } from 'lib/api';
 
+import Routing from 'components/Routing';
 import Wrapper from 'components/Wrapper';
 import Table, { ICellRenderer } from 'components/Table';
 
@@ -42,19 +42,19 @@ const renderTable: ICellRenderer = (value, rowData) => {
                     <FormattedMessage id="admin.tables.show" defaultMessage="Show" />
                 </Button>
             ) : (
-                <Link to={`/${rowData.rowData[2] ? 'vde' : 'admin'}/tables/${rowData.rowData[0]}`}>
+                <Routing.SystemLink page={`/${rowData.rowData[2] ? 'vde' : 'admin'}/tables/${rowData.rowData[0]}`}>
                     <Button bsStyle="primary">
                         <FormattedMessage id="admin.tables.show" defaultMessage="Show" />
                     </Button>
-                </Link>
+                </Routing.SystemLink>
             );
 
         case 3: return (
-            <Link to={`/${rowData.rowData[2] ? 'vde' : 'admin'}/tables/${rowData.rowData[0]}/edit`}>
+            <Routing.SystemLink page={`/${rowData.rowData[2] ? 'vde' : 'admin'}/tables/${rowData.rowData[0]}/edit`}>
                 <Button bsStyle="primary" type="button">
                     <FormattedMessage id="admin.tables.edit" defaultMessage="Edit" />
                 </Button>
-            </Link>
+            </Routing.SystemLink>
         );
 
         default: return value;
@@ -83,11 +83,9 @@ const Tables: React.SFC<ITablesProps & InjectedIntlProps> = (props) => (
             ]
         }}
         breadcrumbs={[
-            {
-                title: (
-                    <FormattedMessage id="admin.tables" defaultMessage="Tables" />
-                )
-            }
+            (
+                <FormattedMessage id="admin.tables" defaultMessage="Tables" />
+            )
         ]}
     >
         <Table

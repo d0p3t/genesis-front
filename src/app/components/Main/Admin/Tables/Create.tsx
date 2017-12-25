@@ -17,8 +17,8 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 
+import Routing from 'components/Routing';
 import DocumentTitle from 'components/DocumentTitle';
 import Heading from 'components/Heading';
 import ValidatedContractForm from 'containers/Widgets/ValidatedContractForm';
@@ -191,9 +191,9 @@ class Create extends React.Component<ICreateProps, ICreateState> {
                     <div className="content-wrapper">
                         <ol className="breadcrumb">
                             <li>
-                                <Link to={this.props.vde ? '/vde/tables' : '/admin/tables'}>
+                                <Routing.SystemLink page={this.props.vde ? '/vde/tables' : '/admin/tables'}>
                                     <FormattedMessage id="admin.tables" defaultMessage="Tables" />
-                                </Link>
+                                </Routing.SystemLink>
                             </li>
                             <li>
                                 <FormattedMessage id="admin.create" defaultMessage="Create" />

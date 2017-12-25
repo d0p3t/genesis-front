@@ -36,12 +36,7 @@ export interface IWrapperProps {
         }[];
     };
     description?: React.ReactNode;
-    breadcrumbs?: IBreadcrumbProps[];
-}
-
-export interface IBreadcrumbProps {
-    title: TMixedContent;
-    url?: string;
+    breadcrumbs?: TMixedContent[];
 }
 
 const StyledDescription = styled.div`
@@ -56,18 +51,6 @@ const StyledBreadcrumbs = styled.ul`
     border-bottom: 1px solid #cfdbe2;
     list-style: none;
 `;
-
-const Breadcrumb: React.SFC<IBreadcrumbProps> = props => (
-    <li>
-        {props.url ?
-            (
-                <Link to={props.url}>{props.title}</Link>
-            ) : (
-                <span>{props.title}</span>
-            )
-        }
-    </li>
-);
 
 const bodyClasses = {
     default: 'content-wrapper',
@@ -99,7 +82,9 @@ const Wrapper: React.SFC<IWrapperProps> = props => (
             {props.breadcrumbs && (
                 <StyledBreadcrumbs className="breadcrumb">
                     {props.breadcrumbs.map((breadcrumb, index) => (
-                        <Breadcrumb key={index} {...breadcrumb} />
+                        <li key={index}>
+                            {breadcrumb}
+                        </li>
                     ))}
                 </StyledBreadcrumbs>
             )}

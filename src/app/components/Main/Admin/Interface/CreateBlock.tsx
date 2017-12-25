@@ -16,8 +16,8 @@
 
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 
+import Routing from 'components/Routing';
 import DocumentTitle from 'components/DocumentTitle';
 import Heading from 'components/Heading';
 import BlockEditor from './BlockEditor';
@@ -77,9 +77,9 @@ class CreateBlock extends React.Component<ICreateBlockProps, ICreateBlockState> 
                     <div className="content-wrapper">
                         <ol className="breadcrumb">
                             <li>
-                                <Link to={this.props.vde ? '/vde/interface' : '/admin/interface'}>
+                                <Routing.SystemLink page={this.props.vde ? '/vde/interface' : '/admin/interface'}>
                                     <FormattedMessage id="admin.interface" defaultMessage="Interface" />
-                                </Link>
+                                </Routing.SystemLink>
                             </li>
                             <li>
                                 <FormattedMessage id="admin.interface.block.create" defaultMessage="Create block" />

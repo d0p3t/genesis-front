@@ -42,6 +42,7 @@ import imgStroke75 from 'images/constructor/stroke-75.svg';
 import imgGrid from 'images/constructor/grid.png';
 
 interface IConstructorProps {
+    section: string;
     pageTree: any;
     changePage?: any;
     setTagCanDropPosition?: any;
@@ -243,6 +244,7 @@ const Constructor: React.SFC<IConstructorProps> = (props) => (
 
             <Layout grid={props.grid} addTag={props.addTag} moveTag={props.moveTag}>
                 <Protypo
+                    section={props.section}
                     context="page"
                     payload={props.pageTree}
                     editable={true}

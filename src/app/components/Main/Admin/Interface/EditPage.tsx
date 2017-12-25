@@ -16,8 +16,8 @@
 
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 
+import Routing from 'components/Routing';
 import DocumentTitle from 'components/DocumentTitle';
 import Heading from 'components/Heading';
 import PageEditor from './PageEditor';
@@ -28,7 +28,7 @@ export interface IEditPageProps {
     tabView?: boolean;
     page: { id: string, name: string, menu: string, conditions: string, value: string };
     menus: { id: string, name: string, conditions: string, value: string }[];
-    navigatePage: (params: { name: string, params?: any, vde?: boolean }) => void;
+    navigatePage: (params: { section: string, name: string, params?: any, vde?: boolean }) => void;
 }
 
 interface IEditPageState {
@@ -86,6 +86,7 @@ class EditPage extends React.Component<IEditPageProps, IEditPageState> {
     onPreview(e: React.MouseEvent<HTMLAnchorElement>) {
         e.preventDefault();
         this.props.navigatePage({
+            section: 'developer',
             name: this.props.page.name,
             vde: this.props.vde
         });
@@ -126,9 +127,9 @@ class EditPage extends React.Component<IEditPageProps, IEditPageState> {
                     <div className="content-wrapper">
                         <ol className="breadcrumb">
                             <li>
-                                <Link to={this.props.vde ? '/vde/interface' : '/admin/interface'}>
+                                <Routing.SystemLink page={this.props.vde ? '/vde/interface' : '/admin/interface'}>
                                     <FormattedMessage id="admin.interface" defaultMessage="Interface" />
-                                </Link>
+                                </Routing.SystemLink>
                             </li>
                             <li>
                                 <FormattedMessage id="admin.interface.pages" defaultMessage="Pages" />

@@ -107,7 +107,7 @@ class App extends React.Component<IAppProps> {
                         {!this.props.isAuthenticated && (
                             <Route path="/" component={General} />
                         )}
-                        <Route path="/" component={Main} />
+                        <Route path="/:section?/" component={Main} />
                     </AnimatedSwitch>
                 </div>
             </IntlProvider>

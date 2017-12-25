@@ -23,14 +23,15 @@ const actionCreator = actionCreatorFactory('content');
 export const setResizing = actionCreator<boolean>('SET_RESIZING');
 export const navigationResize = actionCreator<number>('NAVIGATION_RESIZE');
 export const navigationToggle = actionCreator('NAVIGATION_TOGGLE');
-export const menuPop = actionCreator('MENU_POP');
-export const menuPush = actionCreator<{ name: string, vde: boolean, content: IProtypoElement[] }>('MENU_PUSH');
+export const menuPop = actionCreator<{ section: string }>('MENU_POP');
+export const menuPush = actionCreator<{ section: string, name: string, vde: boolean, content: IProtypoElement[] }>('MENU_PUSH');
 export const alertShow = actionCreator<{ id: string, type: string, title: string, text: string, confirmButton?: string, cancelButton?: string }>('ALERT_SHOW');
 export const alertClose = actionCreator<{ id: string, success: string, error: string }>('ALERT_CLOSE');
-export const ecosystemInit = actionCreator.async<undefined, { defaultMenu: { name: string, vde: boolean, content: IProtypoElement[] }, stylesheet: string }, string>('ECOSYSTEM_INIT');
-export const navigatePage = actionCreator.async<{ name: string, params: { [key: string]: any }, vde?: boolean }, undefined, undefined>('NAVIGATE_PAGE');
-export const renderPage = actionCreator.async<{ name: string, params?: { [key: string]: any }, vde?: boolean }, { menu: { name: string, vde: boolean, content: IProtypoElement[] }, page: { name: string, content: IProtypoElement[], error?: string } }, string>('RENDER_PAGE');
-export const reset = actionCreator.async<undefined, { menu: { name: string, vde: boolean, content: IProtypoElement[] }, page: { name: string, content: IProtypoElement[], error?: string } }, string>('RESET');
+export const ecosystemInit = actionCreator.async<{ section: string }, { defaultMenu: { name: string, vde: boolean, content: IProtypoElement[] }, stylesheet: string }, string>('ECOSYSTEM_INIT');
+export const navigateLast = actionCreator.async<{ section: string }, undefined, undefined>('NAVIGATE_LAST');
+export const navigatePage = actionCreator.async<{ section: string, name?: string, params?: { [key: string]: any }, vde?: boolean }, undefined, undefined>('NAVIGATE_PAGE');
+export const renderPage = actionCreator.async<{ section: string, name: string, params?: { [key: string]: any }, vde?: boolean }, { menu: { name: string, vde: boolean, content: IProtypoElement[] }, page: { name: string, content: IProtypoElement[], error?: string } }, string>('RENDER_PAGE');
+export const reset = actionCreator.async<{ section: string }, { menu: { name: string, vde: boolean, content: IProtypoElement[] }, page: { name: string, content: IProtypoElement[], error?: string } }, string>('RESET');
 
 // Image editor modal window
 export const imageEditorOpen = actionCreator<{ mime: string, data: string, width?: number, aspectRatio?: number }>('IMAGE_EDITOR_OPEN');

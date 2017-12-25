@@ -303,7 +303,7 @@ const api = {
 
     // Level 2
     row: (session: string, table: string, id: string, columns?: string, vde = false) => securedRequest(`row/${table}/${id}?columns=${columns || ''}&vde=${vde}`, session, null, { method: 'GET' }) as Promise<IRowResponse>,
-    contentMenu: (session: string, name: string) => securedRequest(`content/menu/${name}`, session, null)
+    contentMenu: (session: string, name: string, vde = false) => securedRequest(`content/menu/${name}`, session, { vde })
         .then(transformContent),
     contentPage: (session: string, name: string, params: { [key: string]: any }, vde = false) => securedRequest(`content/page/${name}`, session, { ...params, vde })
         .then(transformContent),

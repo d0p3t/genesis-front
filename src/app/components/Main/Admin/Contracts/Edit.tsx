@@ -19,6 +19,7 @@ import { FormControlProps } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import { getContract } from 'modules/admin/actions';
 
+import Routing from 'components/Routing';
 import Wrapper from 'components/Wrapper';
 import ContractEditor from './ContractEditor';
 
@@ -132,17 +133,14 @@ class Edit extends React.Component<IEditProps, IEditState> {
                     )
                 }}
                 breadcrumbs={[
-                    {
-                        url: this.props.vde ? '/vde/contracts' : '/admin/contracts',
-                        title: (
+                    (
+                        <Routing.SystemLink page={this.props.vde ? '/vde/contracts' : '/admin/contracts'}>
                             <FormattedMessage id="admin.contracts" defaultMessage="Smart contracts" />
-                        )
-                    },
-                    {
-                        title: (
-                            <FormattedMessage id="admin.edit" defaultMessage="Edit" />
-                        )
-                    }
+                        </Routing.SystemLink>
+                    ),
+                    (
+                        <FormattedMessage id="admin.edit" defaultMessage="Edit" />
+                    )
                 ]}
             >
                 <ContractEditor

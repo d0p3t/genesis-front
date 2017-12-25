@@ -17,9 +17,9 @@
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { columnTypes } from './Create';
 
+import Routing from 'components/Routing';
 import DocumentTitle from 'components/DocumentTitle';
 import Heading from 'components/Heading';
 import ValidatedContractForm from 'containers/Widgets/ValidatedContractForm';
@@ -80,19 +80,19 @@ class AddColumn extends React.Component<IAddColumnProps, IAddColumnState> {
                     <div className="content-wrapper" >
                         <ol className="breadcrumb">
                             <li>
-                                <Link to={this.props.vde ? '/vde/tables' : '/admin/tables'}>
+                                <Routing.SystemLink page={this.props.vde ? '/vde/tables' : '/admin/tables'}>
                                     <FormattedMessage id="admin.tables" defaultMessage="Tables" />
-                                </Link>
+                                </Routing.SystemLink>
                             </li>
                             <li>
-                                <Link to={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table}`}>
+                                <Routing.SystemLink page={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table}`}>
                                     {this.props.table}
-                                </Link>
+                                </Routing.SystemLink>
                             </li>
                             <li>
-                                <Link to={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table}/edit`}>
+                                <Routing.SystemLink page={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table}/edit`}>
                                     <FormattedMessage id="admin.tables.edit" defaultMessage="Edit" />
-                                </Link>
+                                </Routing.SystemLink>
                             </li>
                             <li>
                                 <FormattedMessage id="admin.tables.column.add" defaultMessage="Add column" />

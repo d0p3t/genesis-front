@@ -17,14 +17,15 @@
 import * as React from 'react';
 import { Button, Col, Panel, Row } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { ITableResponse } from 'lib/api';
 import { columnTypes } from './Create';
 
+import Routing from 'components/Routing';
 import Heading from 'components/Heading';
 import ValidatedContractForm from 'containers/Widgets/ValidatedContractForm';
 import DocumentTitle from 'components/DocumentTitle';
 import Validation from 'components/Validation';
+import SystemLink from 'components/Routing/SystemLink';
 
 export interface IEditTableProps {
     vde?: boolean;
@@ -63,15 +64,15 @@ class EditTable extends React.Component<IEditTableProps> {
                     <div className="content-wrapper">
                         <ol className="breadcrumb">
                             <li>
-                                <Link to={this.props.vde ? '/vde/tables' : '/admin/tables'}>
+                                <SystemLink page={this.props.vde ? '/vde/tables' : '/admin/tables'}>
                                     <FormattedMessage id="admin.tables" defaultMessage="Tables" />
-                                </Link>
+                                </SystemLink>
                             </li>
                             {this.props.table && (
                                 <li>
-                                    <Link to={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}`}>
+                                    <SystemLink page={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}`}>
                                         {this.props.table.name}
-                                    </Link>
+                                    </SystemLink>
                                 </li>
                             )}
                             <li>
@@ -86,11 +87,11 @@ class EditTable extends React.Component<IEditTableProps> {
                                         <div className="clearfix">
                                             <div className="pull-left">
                                                 {this.props.table && (
-                                                    <Link to={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}/edit/add-column`}>
+                                                    <Routing.SystemLink page={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}/edit/add-column`}>
                                                         <Button bsStyle="primary">
                                                             <FormattedMessage id="admin.tables.column.add" defaultMessage="Add column" />
                                                         </Button>
-                                                    </Link>
+                                                    </Routing.SystemLink>
                                                 )}
                                             </div>
                                         </div>
@@ -128,11 +129,11 @@ class EditTable extends React.Component<IEditTableProps> {
                                                         <td>{col.perm}</td>
                                                         <td>
                                                             {this.props.table && (
-                                                                <Link to={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}/edit/column/${col.name}`}>
+                                                                <Routing.SystemLink page={`/${this.props.vde ? 'vde' : 'admin'}/tables/${this.props.table.name}/edit/column/${col.name}`}>
                                                                     <Button bsStyle="primary">
                                                                         <FormattedMessage id="admin.tables.column.edit" defaultMessage="Edit" />
                                                                     </Button>
-                                                                </Link>
+                                                                </Routing.SystemLink>
                                                             )}
                                                         </td>
                                                     </tr>

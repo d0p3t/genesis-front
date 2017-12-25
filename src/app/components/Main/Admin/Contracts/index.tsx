@@ -15,10 +15,10 @@
 // along with the apla-front library. If not, see <http://www.gnu.org/licenses/>.
 
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
 import { IContract } from 'lib/api';
 
+import Routing from 'components/Routing';
 import Wrapper from 'components/Wrapper';
 import Table, { ICellRenderer } from 'components/Table';
 
@@ -48,11 +48,11 @@ const renderCell: ICellRenderer = (data, rowData) => {
         );
 
         case 4: return (
-            <Link to={`/${rowData.rowData[4] ? 'vde' : 'admin'}/contracts/${rowData.rowData[0]}-${rowData.rowData[1]}`} className="btn btn-default btn-labeled btn-icon">
+            <Routing.SystemLink page={`/${rowData.rowData[4] ? 'vde' : 'admin'}/contracts/${rowData.rowData[0]}-${rowData.rowData[1]}`} className="btn btn-default btn-labeled btn-icon">
                 <span className="btn-label">
                     <em className="icon-pencil" />
                 </span>
-            </Link>
+            </Routing.SystemLink>
         );
 
         default: return data;

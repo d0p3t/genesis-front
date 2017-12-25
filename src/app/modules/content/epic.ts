@@ -24,14 +24,37 @@ import * as authActions from 'modules/auth/actions';
 import * as actions from './actions';
 import { history } from 'store';
 
-export const navigatePageEpic: Epic<Action, IRootState> =
-    (action$, store) => action$.ofAction(actions.navigatePage.started)
+export const navigateLastEpic: Epic<Action, IRootState> =
+    (action$, store) => action$.ofAction(actions.navigateLast.started)
         .map(action => {
-            history.push(`/${action.payload.vde ? 'vde/page' : 'page'}/${action.payload.name}`, { params: action.payload.params });
-            return actions.navigatePage.done({
+            const state = store.getState();
+            const section = state.content.sections[action.payload.section];
+            const lastPage = section.pages[section.pages.length - 1];
+
+            history.replace(`/${action.payload.section}/${lastPage.page.name}${lastPage.vde ? '?vde=true' : ''}`, { params: lastPage.params, reload: false });
+            return actions.navigateLast.done({
                 params: action.payload,
                 result: null
             });
+        });
+
+export const navigatePageEpic: Epic<Action, IRootState> =
+    (action$, store) => action$.ofAction(actions.navigatePage.started)
+        .map(action => {
+            if (action.payload.name) {
+                history.replace(`/${action.payload.section}/${action.payload.name}${action.payload.vde ? '?vde=true' : ''}`, { params: action.payload.params });
+                return actions.navigatePage.done({
+                    params: action.payload,
+                    result: null
+                });
+            }
+            else {
+                history.replace(`/${action.payload.section}`);
+                return actions.navigatePage.done({
+                    params: action.payload,
+                    result: null
+                });
+            }
         });
 
 export const renderPageEpic: Epic<Action, IRootState> =
@@ -67,9 +90,10 @@ export const ecosystemInitEpic: Epic<Action, IRootState> =
     (action$, store) => action$.ofAction(actions.ecosystemInit.started)
         .flatMap(action => {
             const state = store.getState();
+            const section = state.content.sections[action.payload.section];
 
             const promise = Promise.all([
-                api.contentMenu(state.auth.sessionToken, 'default_menu'),
+                api.contentMenu(state.auth.sessionToken, section.defaultMenu, section.vde),
                 api.parameter(state.auth.sessionToken, 'stylesheet'),
                 Promise.all([
                     api.parameter(state.auth.sessionToken, 'key_mask'),
@@ -111,23 +135,30 @@ export const ecosystemInitEpic: Epic<Action, IRootState> =
             ]);
 
             return Observable.fromPromise(promise)
-                .flatMap(payload => Observable.concat([
-                    authActions.updateMetadata.started({
-                        ...payload[2],
-                        ecosystem: state.auth.ecosystem
-                    }),
-                    actions.ecosystemInit.done({
-                        params: action.payload,
-                        result: {
-                            stylesheet: payload[1].value || null,
-                            defaultMenu: {
-                                name: 'default_menu',
-                                vde: false,
-                                content: payload[0].tree
+                .flatMap(payload => {
+                    if (payload[0].error) {
+                        throw { e: 'E_MENU_EMPTY' };
+                    }
+
+                    return Observable.concat([
+                        authActions.updateMetadata.started({
+                            ...payload[2],
+                            ecosystem: state.auth.ecosystem
+                        }),
+                        actions.ecosystemInit.done({
+                            params: action.payload,
+                            result: {
+                                stylesheet: payload[1].value || null,
+                                defaultMenu: {
+                                    name: section.defaultMenu,
+                                    vde: section.vde,
+                                    content: payload[0].tree
+                                }
                             }
-                        }
-                    })
-                ]))
+                        })
+                    ]);
+                }
+                )
                 .catch((e: IAPIError) =>
                     Observable.of(actions.ecosystemInit.failed({
                         params: action.payload,
@@ -209,6 +240,7 @@ export default combineEpics(
     ecosystemInitEpic,
     resetEpic,
     alertEpic,
+    navigateLastEpic,
     navigatePageEpic,
     fetchNotificationsEpic
 );

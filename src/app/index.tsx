@@ -23,6 +23,7 @@ import store, { history } from 'store';
 import needle from 'needle';
 
 import 'jspolyfill-array.prototype.find';
+import 'url-search-params-polyfill';
 import 'whatwg-fetch';
 import 'font-awesome/css/font-awesome.css';
 import 'simple-line-icons/css/simple-line-icons.css';

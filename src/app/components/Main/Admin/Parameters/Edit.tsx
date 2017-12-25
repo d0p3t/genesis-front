@@ -18,6 +18,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { IParameterResponse } from 'lib/api';
 
+import Routing from 'components/Routing';
 import Wrapper from 'components/Wrapper';
 import ParameterEditor from './ParameterEditor';
 
@@ -100,15 +101,12 @@ class Edit extends React.Component<IEditProps, IEditState> {
                     )
                 }}
                 breadcrumbs={[
-                    {
-                        url: this.props.vde ? '/vde/parameters' : '/admin/parameters',
-                        title: (
+                    (
+                        <Routing.SystemLink page={this.props.vde ? '/vde/parameters' : '/admin/parameters'}>
                             <FormattedMessage id="admin.parameters" defaultMessage="Ecosystem parameters" />
-                        )
-                    },
-                    {
-                        title: this.props.parameter.name
-                    }
+                        </Routing.SystemLink>
+                    ),
+                    this.props.parameter.name
                 ]}
             >
                 <ParameterEditor

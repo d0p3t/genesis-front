@@ -17,9 +17,9 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { IParameterResponse } from 'lib/api';
 
+import Routing from 'components/Routing';
 import Wrapper from 'components/Wrapper';
 import Table, { ICellRenderer } from 'components/Table';
 
@@ -43,13 +43,13 @@ const renderParameter: ICellRenderer = (value, rowData) => {
         );
 
         case 3: return (
-            <Link to={`/${rowData.rowData[3] ? 'vde' : 'admin'}/parameters/${rowData.rowData[0]}`}>
+            <Routing.SystemLink page={`/${rowData.rowData[3] ? 'vde' : 'admin'}/parameters/${rowData.rowData[0]}`}>
                 <Button bsStyle="default" className="btn-labeled btn-icon">
                     <span className="btn-label">
                         <em className="icon-pencil" />
                     </span>
                 </Button>
-            </Link>
+            </Routing.SystemLink>
         );
 
         default: return value;

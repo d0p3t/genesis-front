@@ -18,6 +18,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { columnDisplayRules } from './View';
 
+import Routing from 'components/Routing';
 import Wrapper from 'components/Wrapper';
 import Table, { ICellRenderer } from 'components/Table';
 
@@ -62,24 +63,21 @@ const History: React.SFC<IHistoryProps> = (props) => (
             )
         }}
         breadcrumbs={[
-            {
-                title: (
+            (
+                <Routing.SystemLink page="/admin/tables">
                     <FormattedMessage id="admin.tables" defaultMessage="Tables" />
-                ),
-                url: '/admin/tables'
-            },
-            {
-                title: props.table,
-                url: `/admin/tables/${props.table}`
-            },
-            {
-                title: props.id
-            },
-            {
-                title: (
-                    <FormattedMessage id="admin.tables.history" defaultMessage="History" />
-                )
-            }
+                </Routing.SystemLink>
+            ),
+            (
+                <Routing.SystemLink page={`/admin/tables/${props.table}`}>
+                    {props.table}
+                </Routing.SystemLink>
+            ),
+            props.id
+            ,
+            (
+                <FormattedMessage id="admin.tables.history" defaultMessage="History" />
+            )
         ]}
     >
         <Table

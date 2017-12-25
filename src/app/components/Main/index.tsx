@@ -17,10 +17,12 @@
 import * as React from 'react';
 import ReduxToastr from 'react-redux-toastr';
 import LoadingBar from 'react-redux-loading-bar';
-import { OrderedMap } from 'immutable';
+import { Iterable } from 'immutable';
 import styled from 'styled-components';
 import platform from 'lib/platform';
+
 import Titlebar from './Titlebar';
+import Routing from 'containers/Routing';
 import UserMenu from 'containers/Widgets/UserMenu';
 import Navigation from 'containers/Main/Navigation';
 
@@ -36,13 +38,17 @@ const StyledWrapper = styled.div`
 `;
 
 export interface IMainProps {
-    session: string;
+    section: string;
+    sections: {
+        name: string;
+        title: string;
+    }[];
     isEcosystemOwner: boolean;
     pending: boolean;
     stylesheet: string;
     navigationWidth: number;
     navigationVisible: boolean;
-    pendingTransactions: OrderedMap<string, { uuid: string, block: string, error: string, contract: string }>;
+    pendingTransactions: Iterable<string, { uuid: string, block: string, error: string, contract: string }>;
     transactionsCount: number;
 }
 
@@ -109,7 +115,7 @@ const StyledMenu = styled.ul`
         }
 
         &.active {
-            > button {
+            button {
                 background: #eeeeee;
                 color: #000;
             }
@@ -129,11 +135,23 @@ const StyledLoadingBar = styled(LoadingBar) `
     left: 0;
 `;
 
-const MenuItem: React.SFC<{ active?: boolean }> = props => (
+const MenuItem: React.SFC<{ section?: string, active?: boolean, onClick?: () => void }> = props => (
     <li className={props.active ? 'active' : ''}>
-        <button>
-            {props.children}
-        </button>
+        {props.section ?
+            (
+                <Routing.SectionLink section={props.section}>
+                    <button onClick={props.onClick}>
+                        {props.children}
+                    </button>
+                </Routing.SectionLink>
+
+            ) :
+            (
+                <button onClick={props.onClick}>
+                    {props.children}
+                </button>
+            )
+        }
     </li>
 );
 
@@ -224,7 +242,15 @@ class Main extends React.Component<IMainProps> {
                         <MenuItem>
                             <em className="icon-grid" />
                         </MenuItem>
-                        <MenuItem active>Home</MenuItem>
+                        {this.props.sections.map(section => (
+                            <MenuItem
+                                key={section.name}
+                                section={section.name}
+                                active={section.name === this.props.section}
+                            >
+                                {section.title}
+                            </MenuItem>
+                        ))}
                         <li className="user-menu">
                             <UserMenu />
                         </li>
@@ -244,7 +270,7 @@ class Main extends React.Component<IMainProps> {
                         }}
                     />
                 </StyledControls>
-                <Navigation topOffset={styles.headerHeight + styles.menuHeight + styles.toolbarHeight} />
+                <Navigation section={this.props.section} topOffset={styles.headerHeight + styles.menuHeight + styles.toolbarHeight} />
                 <StyledContent style={{ marginLeft: this.props.navigationVisible ? this.props.navigationWidth : 0 }}>
                     <ReduxToastr
                         timeOut={3000}

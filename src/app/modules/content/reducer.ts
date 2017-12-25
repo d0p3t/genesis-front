@@ -26,11 +26,33 @@ export type State = {
     readonly navigationWidth: number;
     readonly navigationResizing: boolean;
     readonly navigationVisible: boolean;
-    readonly menus: { name: string, vde: boolean, content: IProtypoElement[] }[];
-    readonly page: { name: string, content: IProtypoElement[], error?: string };
     readonly notifications: IProtypoElement[];
     readonly alert: { id: string, success: string, error: string };
     readonly imageEditor: { mime: string, data: string, aspectRatio: number, minWidth: number, result: string };
+    readonly defaultSection: string;
+    readonly sections: {
+        [name: string]: {
+            pending: boolean;
+            name: string;
+            title: string;
+            vde: boolean;
+            defaultMenu: string;
+            defaultPage: string;
+            menus: {
+                name: string;
+                vde: boolean;
+                content: IProtypoElement[];
+            }[];
+            pages: {
+                vde: boolean;
+                params: {
+                    [key: string]: any;
+                };
+                menu: { name: string, vde: boolean, content: IProtypoElement[] };
+                page: { name: string, content: IProtypoElement[], error?: string };
+            }[];
+        }
+    };
 };
 
 export const initialState: State = {
@@ -40,11 +62,42 @@ export const initialState: State = {
     navigationWidth: 350,
     navigationResizing: false,
     navigationVisible: true,
-    menus: [],
-    page: null,
     notifications: null,
     alert: null,
-    imageEditor: { mime: null, data: null, aspectRatio: null, minWidth: null, result: null }
+    imageEditor: { mime: null, data: null, aspectRatio: null, minWidth: null, result: null },
+    defaultSection: 'home',
+    sections: {
+        home: {
+            pending: false,
+            name: 'home',
+            title: 'Home',
+            vde: false,
+            defaultMenu: 'default_menu',
+            defaultPage: 'default_page',
+            menus: [],
+            pages: []
+        },
+        dev: {
+            pending: false,
+            name: 'dev',
+            title: 'Developer',
+            vde: false,
+            defaultMenu: 'developer_tools',
+            defaultPage: 'default_developer',
+            menus: [],
+            pages: []
+        },
+        vde: {
+            pending: false,
+            name: 'vde',
+            title: 'VDE',
+            vde: true,
+            defaultMenu: 'default_menu',
+            defaultPage: 'demo_page',
+            menus: [],
+            pages: []
+        }
+    }
 };
 
 export default (state: State = initialState, action: Action): State => {
@@ -83,77 +136,104 @@ export default (state: State = initialState, action: Action): State => {
         };
     }
 
-    if (isType(action, actions.navigatePage.started)) {
-        return {
-            ...state,
-            page: null
-        };
-    }
-
     if (isType(action, actions.renderPage.started)) {
         return {
             ...state,
-            pending: true,
-            page: null
+            sections: {
+                ...state.sections,
+                [action.payload.section]: {
+                    ...state.sections[action.payload.section],
+                    pending: true
+                }
+            }
         };
     }
     else if (isType(action, actions.renderPage.done)) {
-        const menuIndex = state.menus.findIndex(l => l.name === action.payload.result.menu.name && Boolean(l.vde) === Boolean(action.payload.result.menu.vde));
-        if (-1 === menuIndex) {
-            return {
-                ...state,
-                pending: false,
-                menus: [...state.menus, action.payload.result.menu],
-                page: action.payload.result.page
-            };
-        }
-        else {
-            return {
-                ...state,
-                pending: false,
-                menus: state.menus.slice(0, menuIndex + 1),
-                page: action.payload.result.page
-            };
-        }
-    }
-    else if (isType(action, actions.renderPage.failed)) {
+        const section = state.sections[action.payload.params.section];
+        const menuIndex = section.menus.findIndex(l =>
+            l.name === action.payload.result.menu.name &&
+            Boolean(l.vde) === Boolean(action.payload.result.menu.vde)
+        );
+
         return {
             ...state,
-            pending: false,
-            page: {
-                name: action.payload.params.name,
-                content: null,
-                error: action.payload.error
+            sections: {
+                ...state.sections,
+                [action.payload.params.section]: {
+                    ...section,
+                    menus: -1 === menuIndex ?
+                        [...section.menus, action.payload.result.menu] :
+                        section.menus.slice(0, menuIndex + 1),
+                    pages: [
+                        ...section.pages,
+                        {
+                            params: action.payload.params.params,
+                            menu: action.payload.result.menu,
+                            page: action.payload.result.page,
+                            vde: action.payload.params.vde
+                        }
+                    ],
+                    pending: false
+                }
+            }
+        };
+    }
+    else if (isType(action, actions.renderPage.failed)) {
+        const section = state.sections[action.payload.params.section];
+        return {
+            ...state,
+            sections: {
+                ...state.sections,
+                [action.payload.params.section]: {
+                    ...section,
+                    pages: [
+                        ...section.pages,
+                        {
+                            params: action.payload.params.params,
+                            menu: null,
+                            page: {
+                                name: action.payload.params.name,
+                                content: null,
+                                error: action.payload.error
+                            },
+                            vde: action.payload.params.vde
+                        }
+                    ],
+                    pending: false
+                }
             }
         };
     }
 
     if (isType(action, actions.menuPop)) {
-        if (1 >= state.menus.length) {
-            return state;
-        }
-        else {
-            return {
-                ...state,
-                menus: state.menus.slice(0, -1)
-            };
-        }
+        const section = state.sections[action.payload.section];
+        return section.menus.length > 1 ? {
+            ...state,
+            sections: {
+                ...state.sections,
+                [action.payload.section]: {
+                    ...section,
+                    menus: section.menus.slice(0, -1)
+                }
+            }
+        } : state;
     }
 
     if (isType(action, actions.menuPush)) {
-        const menuIndex = state.menus.findIndex(l => l.name === action.payload.name && Boolean(l.vde) === Boolean(action.payload.vde));
-        if (-1 === menuIndex) {
-            return {
-                ...state,
-                menus: [...state.menus, action.payload]
-            };
-        }
-        else {
-            return {
-                ...state,
-                menus: state.menus.slice(0, menuIndex + 1)
-            };
-        }
+        const section = state.sections[action.payload.section];
+        const menuIndex = section.menus.findIndex(l => l.name === action.payload.name && Boolean(l.vde) === Boolean(action.payload.vde));
+        return {
+            ...state,
+            sections: {
+                ...state.sections,
+                [action.payload.section]: {
+                    ...section,
+                    menus: -1 === menuIndex ?
+                        [...section.menus, action.payload] :
+                        section.menus.slice(0, menuIndex + 1)
+                }
+            }
+        };
     }
 
     if (isType(action, actions.ecosystemInit.started)) {
@@ -163,26 +243,41 @@ export default (state: State = initialState, action: Action): State => {
         };
     }
     else if (isType(action, actions.ecosystemInit.done)) {
-        const menuNeedsPush = !state.menus.length || !state.menus.find(l => l.name === action.payload.result.defaultMenu.name);
-        if (menuNeedsPush) {
-            return {
-                ...state,
-                preloading: false,
-                stylesheet: action.payload.result.stylesheet,
-                menus: [action.payload.result.defaultMenu, ...state.menus]
-            };
-        }
-        else {
-            return {
-                ...state,
-                stylesheet: action.payload.result.stylesheet
-            };
-        }
-    }
-    else if (isType(action, actions.ecosystemInit.failed)) {
+        const section = state.sections[action.payload.params.section];
+        const menuNeedsPush = !section.menus.length || !section.menus.find(l => l.name === section.defaultMenu && Boolean(l.vde) === Boolean(section.vde));
         return {
             ...state,
-            preloading: false
+            preloading: false,
+            stylesheet: action.payload.result.stylesheet,
+            sections: menuNeedsPush ? {
+                ...state.sections,
+                [action.payload.params.section]: {
+                    ...section,
+                    menus: [action.payload.result.defaultMenu, ...section.menus]
+                }
+            } : state.sections
+        };
+    }
+    else if (isType(action, actions.ecosystemInit.failed)) {
+        const section = state.sections[action.payload.params.section];
+        const menuNeedsPush = !section.menus.length || !section.menus.find(l => l.name === section.defaultMenu && Boolean(l.vde) === Boolean(section.vde));
+        return {
+            ...state,
+            preloading: false,
+            sections: menuNeedsPush ? {
+                ...state.sections,
+                [action.payload.params.section]: {
+                    ...section,
+                    menus: [
+                        {
+                            name: section.defaultMenu,
+                            vde: false,
+                            content: []
+                        },
+                        ...section.menus
+                    ]
+                }
+            } : state.sections
         };
     }
 
@@ -200,29 +295,62 @@ export default (state: State = initialState, action: Action): State => {
     }
 
     if (isType(action, actions.reset.started)) {
+        const section = state.sections[action.payload.section];
         return {
             ...state,
-            pending: true,
-            page: null,
-            menus: []
+            sections: {
+                [action.payload.section]: {
+                    ...section,
+                    pages: [],
+                    menus: [],
+                    pending: true
+                }
+            }
         };
     }
     else if (isType(action, actions.reset.done)) {
+        const section = state.sections[action.payload.params.section];
         return {
             ...state,
-            pending: false,
-            menus: [action.payload.result.menu],
-            page: action.payload.result.page
+            sections: {
+                [action.payload.params.section]: {
+                    ...section,
+                    pages: [
+                        {
+                            params: {},
+                            menu: action.payload.result.menu,
+                            page: action.payload.result.page,
+                            vde: section.vde
+                        }
+                    ],
+                    menus: [action.payload.result.menu],
+                    pending: true
+                }
+            }
         };
     }
     else if (isType(action, actions.reset.failed)) {
+        const section = state.sections[action.payload.params.section];
         return {
             ...state,
-            pending: false,
-            page: {
-                name: null,
-                content: null,
-                error: action.payload.error
+            sections: {
+                [action.payload.params.section]: {
+                    ...section,
+                    pages: [
+                        {
+                            params: {},
+                            menu: null,
+                            page: {
+                                name: action.payload.params.section,
+                                content: null,
+                                error: action.payload.error
+                            },
+                            vde: section.vde
+                        }
+                    ],
+                    menus: [],
+                    pending: true
+                }
             }
         };
     }

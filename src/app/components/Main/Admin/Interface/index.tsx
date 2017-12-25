@@ -15,10 +15,10 @@
 // along with the apla-front library. If not, see <http://www.gnu.org/licenses/>.
 
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import { Button, Col, Panel, Row } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 
+import Routing from 'components/Routing';
 import DocumentTitle from 'components/DocumentTitle';
 import Heading from 'components/Heading';
 
@@ -35,24 +35,24 @@ const Interface: React.SFC<IInterfaceProps> = (props) => (
             <Heading>
                 <FormattedMessage id="admin.interface" defaultMessage="Interface" />
                 <div className="pull-right">
-                    <Link to={props.vde ? '/vde/interface/create-page' : '/admin/interface/create-page'} className="ml btn-tool">
+                    <Routing.SystemLink page={props.vde ? '/vde/interface/create-page' : '/admin/interface/create-page'} className="ml btn-tool">
                         <em className="icon icon-plus" />
                         <span>
                             <FormattedMessage id="admin.interface.page.create" defaultMessage="Create page" />
                         </span>
-                    </Link>
-                    <Link to={props.vde ? '/vde/interface/create-block' : '/admin/interface/create-block'} className="ml btn-tool">
+                    </Routing.SystemLink>
+                    <Routing.SystemLink page={props.vde ? '/vde/interface/create-block' : '/admin/interface/create-block'} className="ml btn-tool">
                         <em className="icon icon-plus" />
                         <span>
                             <FormattedMessage id="admin.interface.block.create" defaultMessage="Create block" />
                         </span>
-                    </Link>
-                    <Link to={props.vde ? '/vde/interface/create-menu' : '/admin/interface/create-menu'} className="ml btn-tool">
+                    </Routing.SystemLink>
+                    <Routing.SystemLink page={props.vde ? '/vde/interface/create-menu' : '/admin/interface/create-menu'} className="ml btn-tool">
                         <em className="icon icon-plus" />
                         <span>
                             <FormattedMessage id="admin.interface.menu.create" defaultMessage="Create menu" />
                         </span>
-                    </Link>
+                    </Routing.SystemLink>
                 </div>
             </Heading>
             <div className="content-wrapper">
@@ -75,20 +75,20 @@ const Interface: React.SFC<IInterfaceProps> = (props) => (
                                                 <tr key={page.id}>
                                                     <td>{page.name}</td>
                                                     <td style={{ width: 1 }}>
-                                                        <Link to={`/${props.vde ? 'vde' : 'admin'}/interface/page/${page.id}-${page.name}`}>
+                                                        <Routing.SystemLink page={`/${props.vde ? 'vde' : 'admin'}/interface/page/${page.id}-${page.name}`}>
                                                             <Button bsStyle="default" className="btn-labeled btn-icon">
                                                                 <span className="btn-label">
                                                                     <em className="fa fa-edit" />
                                                                 </span>
                                                             </Button>
-                                                        </Link>
-                                                        <Link to={`/${props.vde ? 'vde' : 'admin'}/tabs/interfacePage-${page.id}-${page.name}`}>
+                                                        </Routing.SystemLink>
+                                                        <Routing.SystemLink page={`/${props.vde ? 'vde' : 'admin'}/tabs/interfacePage-${page.id}-${page.name}`}>
                                                             <Button bsStyle="default" className="btn-labeled btn-icon">
                                                                 <span className="btn-label">
                                                                     <em className="fa fa-files-o" />
                                                                 </span>
                                                             </Button>
-                                                        </Link>
+                                                        </Routing.SystemLink>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -117,20 +117,20 @@ const Interface: React.SFC<IInterfaceProps> = (props) => (
                                                 <tr key={menu.id}>
                                                     <td>{menu.name}</td>
                                                     <td style={{ width: 1 }}>
-                                                        <Link to={`/${props.vde ? 'vde' : 'admin'}/interface/menu/${menu.id}-${menu.name}`}>
+                                                        <Routing.SystemLink page={`/${props.vde ? 'vde' : 'admin'}/interface/menu/${menu.id}-${menu.name}`}>
                                                             <Button bsStyle="default" className="btn-labeled btn-icon">
                                                                 <span className="btn-label">
                                                                     <em className="fa fa-edit" />
                                                                 </span>
                                                             </Button>
-                                                        </Link>
-                                                        <Link to={`/${props.vde ? 'vde' : 'admin'}/tabs/interfaceMenu-${menu.id}-${menu.name}`}>
+                                                        </Routing.SystemLink>
+                                                        <Routing.SystemLink page={`/${props.vde ? 'vde' : 'admin'}/tabs/interfaceMenu-${menu.id}-${menu.name}`}>
                                                             <Button bsStyle="default" className="btn-labeled btn-icon">
                                                                 <span className="btn-label">
                                                                     <em className="fa fa-files-o" />
                                                                 </span>
                                                             </Button>
-                                                        </Link>
+                                                        </Routing.SystemLink>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -157,20 +157,20 @@ const Interface: React.SFC<IInterfaceProps> = (props) => (
                                                 <tr key={block.id}>
                                                     <td>{block.name}</td>
                                                     <td style={{ width: 1 }}>
-                                                        <Link to={`/${props.vde ? 'vde' : 'admin'}/interface/block/${block.id}-${block.name}`}>
+                                                        <Routing.SystemLink page={`/${props.vde ? 'vde' : 'admin'}/interface/block/${block.id}-${block.name}`}>
                                                             <Button bsStyle="default" className="btn-labeled btn-icon">
                                                                 <span className="btn-label">
                                                                     <em className="fa fa-edit" />
                                                                 </span>
                                                             </Button>
-                                                        </Link>
-                                                        <Link to={`/${props.vde ? 'vde' : 'admin'}/tabs/interfaceBlock-${block.id}-${block.name}`}>
+                                                        </Routing.SystemLink>
+                                                        <Routing.SystemLink page={`/${props.vde ? 'vde' : 'admin'}/tabs/interfaceBlock-${block.id}-${block.name}`}>
                                                             <Button bsStyle="default" className="btn-labeled btn-icon">
                                                                 <span className="btn-label">
                                                                     <em className="fa fa-files-o" />
                                                                 </span>
                                                             </Button>
-                                                        </Link>
+                                                        </Routing.SystemLink>
                                                     </td>
                                                 </tr>
                                             ))}

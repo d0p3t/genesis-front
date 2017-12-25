@@ -15,10 +15,10 @@
 // along with the apla-front library. If not, see <http://www.gnu.org/licenses/>.
 
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import Editor from 'components/Editor';
 
+import Editor from 'components/Editor';
+import Routing from 'components/Routing';
 import ValidatedContractForm from 'containers/Widgets/ValidatedContractForm';
 import Validation from 'components/Validation';
 
@@ -90,13 +90,11 @@ const PageEditor: React.SFC<IPageEditorProps> = (props) => (
             </div>
             <div className="panel-footer">
                 <div className="text-right">
-                    {props.page ?
-                        (
-                            <Link to={`/${props.vde ? 'vde' : 'admin'}/tabs/interfaceConstructor-${props.page.id}-${props.page.name}`} className="btn btn-primary pull-left">
-                                Open in Constructor
-                            </Link>
-                        ) : ('')
-                    }
+                    {props.page && (
+                        <Routing.SystemLink page={`/${props.vde ? 'vde' : 'admin'}/tabs/interfaceConstructor-${props.page.id}-${props.page.name}`} className="btn btn-primary pull-left">
+                            Open in Constructor
+                        </Routing.SystemLink>
+                    )}
 
                     <Validation.components.ValidatedSubmit bsStyle="primary">
                         <FormattedMessage id="admin.save" defaultMessage="Save" />

@@ -35,6 +35,7 @@ const Title = styled.div`
 `;
 
 interface ITabsContainerProps {
+    section: string;
     tabData: any;
     tabList: { id: string, type: string, name?: string, visible?: boolean }[];
     getTabList: typeof getTabList.started;
@@ -85,60 +86,60 @@ class TabsContainer extends React.Component<ITabsContainerProps & { match: { par
                     tabsContent.push(
                         <div key={tabListItem.type + tabListItem.id}>
                             <Title>Interface Page</Title>
-                            <InterfacePageEditTabbed pageID={tabListItem.id}/>
+                            <InterfacePageEditTabbed pageID={tabListItem.id} />
                         </div>
                     );
                 }
                 else
-                if (tabListItem.type === 'interfaceBlock') {
-                    tabsContent.push(
-                        <div key={tabListItem.type + tabListItem.id}>
-                            <Title>Interface Block</Title>
-                            <InterfaceBlockEditTabbed blockID={tabListItem.id}/>
-                        </div>
-                    );
-                }
-                else
-                if (tabListItem.type === 'interfaceMenu') {
-                    tabsContent.push(
-                        <div key={tabListItem.type + tabListItem.id}>
-                            <Title>Interface Menu</Title>
-                            <InterfaceMenuEditTabbed menuID={tabListItem.id}/>
-                        </div>
-                    );
-                }
-                else
-                if (tabListItem.type === 'interfaceConstructor') {
-                    tabsContent.push(
-                        <div key={tabListItem.type + tabListItem.id}>
-                            <Title>Interface Constructor</Title>
-                            <InterfaceConstructorTabbed pageID={tabListItem.id} pageName={tabListItem.name}/>
-                        </div>
-                    );
-                }
-                else
-                if (tabListItem.type === 'contract') {
-                    tabsContent.push(
-                        <div key={tabListItem.type + tabListItem.id}>
-                            <Title>Smart Contract</Title>
-                            <ContractEditTabbed contractID={tabListItem.id}/>
-                        </div>
-                    );
-                }
-                else
-                if (tabListItem.type === 'parameter') {
-                    tabsContent.push(
-                        <div key={tabListItem.type + tabListItem.id}>
-                            <Title>Ecosystem Parameter</Title>
-                            <ParameterEditTabbed parameterName={tabListItem.id}/>
-                        </div>
-                    );
-                }
-                else {
-                    tabsContent.push(
-                        <div key={tabListItem.type + tabListItem.id}/>
-                    );
-                }
+                    if (tabListItem.type === 'interfaceBlock') {
+                        tabsContent.push(
+                            <div key={tabListItem.type + tabListItem.id}>
+                                <Title>Interface Block</Title>
+                                <InterfaceBlockEditTabbed blockID={tabListItem.id} />
+                            </div>
+                        );
+                    }
+                    else
+                        if (tabListItem.type === 'interfaceMenu') {
+                            tabsContent.push(
+                                <div key={tabListItem.type + tabListItem.id}>
+                                    <Title>Interface Menu</Title>
+                                    <InterfaceMenuEditTabbed menuID={tabListItem.id} />
+                                </div>
+                            );
+                        }
+                        else
+                            if (tabListItem.type === 'interfaceConstructor') {
+                                tabsContent.push(
+                                    <div key={tabListItem.type + tabListItem.id}>
+                                        <Title>Interface Constructor</Title>
+                                        <InterfaceConstructorTabbed section={this.props.section} pageID={tabListItem.id} pageName={tabListItem.name} />
+                                    </div>
+                                );
+                            }
+                            else
+                                if (tabListItem.type === 'contract') {
+                                    tabsContent.push(
+                                        <div key={tabListItem.type + tabListItem.id}>
+                                            <Title>Smart Contract</Title>
+                                            <ContractEditTabbed contractID={tabListItem.id} />
+                                        </div>
+                                    );
+                                }
+                                else
+                                    if (tabListItem.type === 'parameter') {
+                                        tabsContent.push(
+                                            <div key={tabListItem.type + tabListItem.id}>
+                                                <Title>Ecosystem Parameter</Title>
+                                                <ParameterEditTabbed parameterName={tabListItem.id} />
+                                            </div>
+                                        );
+                                    }
+                                    else {
+                                        tabsContent.push(
+                                            <div key={tabListItem.type + tabListItem.id} />
+                                        );
+                                    }
             }
 
         }

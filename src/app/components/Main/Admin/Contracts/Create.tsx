@@ -18,6 +18,7 @@ import * as React from 'react';
 import { FormControlProps } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 
+import Routing from 'components/Routing';
 import Wrapper from 'components/Wrapper';
 import ContractEditor from './ContractEditor';
 
@@ -103,17 +104,14 @@ class Create extends React.Component<ICreateProps, ICreateState> {
                     )
                 }}
                 breadcrumbs={[
-                    {
-                        url: this.props.vde ? '/vde/contracts' : '/admin/contracts',
-                        title: (
+                    (
+                        <Routing.SystemLink page={this.props.vde ? '/vde/contracts' : '/admin/contracts'}>
                             <FormattedMessage id="admin.contracts" defaultMessage="Smart contracts" />
-                        )
-                    },
-                    {
-                        title: (
-                            <FormattedMessage id="admin.interface.contracts.create" defaultMessage="Create" />
-                        )
-                    }
+                        </Routing.SystemLink>
+                    ),
+                    (
+                        <FormattedMessage id="admin.interface.contracts.create" defaultMessage="Create" />
+                    )
                 ]}
             >
                 <ContractEditor

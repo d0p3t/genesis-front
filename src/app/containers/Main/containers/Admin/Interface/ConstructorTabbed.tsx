@@ -25,6 +25,7 @@ import { CodeGenerator } from 'lib/constructor';
 // import { DragDropContext } from 'react-dnd';
 
 export interface IConstructorTabbedContainerProps {
+    section: string;
     pageID: string;
     pageName: string;
     vde?: boolean;
@@ -109,6 +110,7 @@ class ConstructorTabbedContainer extends React.Component<IConstructorTabbedConta
 
         return (
             <Constructor
+                section={this.props.section}
                 pageTree={pageTree}
                 changePage={this.changePage.bind(this)}
                 setTagCanDropPosition={this.setTagCanDropPosition.bind(this)}

@@ -17,42 +17,63 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'modules';
-import { navigatePage } from 'modules/content/actions';
+import { navigatePage, navigateLast } from 'modules/content/actions';
 
-import { IProtypoElement } from 'components/Protypo/Protypo';
-import Page from 'components/Main/Page';
-
-interface IDefaultPageContainerProps {
-    session: string;
-    pending: boolean;
-    page: { name: string, content: IProtypoElement[] };
-    navigatePage: typeof navigatePage.started;
+export interface IDefaultPageContainerProps {
+    match?: {
+        params: {
+            section: string;
+            page: string;
+        };
+    };
 }
 
-class DefaultPageContainer extends React.Component<IDefaultPageContainerProps> {
+interface IDefaultPageContainerState {
+    defaultPage: string;
+    vde: boolean;
+    hasHistory: boolean;
+}
+
+interface IDefaultPageContainerDispatch {
+    navigatePage: typeof navigatePage.started;
+    navigateLast: typeof navigateLast.started;
+}
+
+class DefaultPageContainer extends React.Component<IDefaultPageContainerProps & IDefaultPageContainerState & IDefaultPageContainerDispatch> {
     componentWillMount() {
-        this.props.navigatePage({
-            name: 'default_page',
-            params: null
-        });
+        if (this.props.hasHistory) {
+            this.props.navigateLast({
+                section: this.props.match.params.section
+            });
+        }
+        else {
+            this.props.navigatePage({
+                section: this.props.match.params.section,
+                name: this.props.defaultPage,
+                vde: this.props.vde,
+                params: null
+            });
+        }
     }
 
     render() {
-        return (
-            <Page
-                name={this.props.page && this.props.page.name}
-                payload={this.props.page && this.props.page.content}
-            />
-        );
+        return null as JSX.Element;
     }
 }
 
-const mapStateToProps = (state: IRootState) => ({
-    page: state.content.page
-});
+const mapStateToProps = (state: IRootState, ownProps: IDefaultPageContainerProps) => {
+    const section = state.content.sections[ownProps.match.params.section];
 
-const mapDispatchToProps = {
-    navigatePage: navigatePage.started
+    return {
+        defaultPage: section.defaultPage,
+        vde: section.vde,
+        hasHistory: section.pages.length > 0
+    };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DefaultPageContainer);
+const mapDispatchToProps = {
+    navigatePage: navigatePage.started,
+    navigateLast: navigateLast.started
+};
+
+export default connect<IDefaultPageContainerState, IDefaultPageContainerDispatch, IDefaultPageContainerProps>(mapStateToProps, mapDispatchToProps)(DefaultPageContainer);

@@ -31,6 +31,7 @@ import TxButton from 'containers/Widgets/TxButton';
 // tslint:disable:no-console
 
 export interface IDebugProps {
+    section: string;
     session: string;
     contractExec: typeof contractExec.started;
 }
@@ -128,6 +129,7 @@ export default class extends React.Component<IDebugProps, IDebugState> {
                         <Col md={6}>
                             {this.state.result && (
                                 <Protypo
+                                    section={this.props.section}
                                     context="page"
                                     payload={this.state.result}
                                 />
@@ -155,8 +157,9 @@ export default class extends React.Component<IDebugProps, IDebugState> {
                         <hr />
                         <Button bsStyle="primary" className="btn-block" onClick={this.onSubmit.bind(this)}>Request template</Button>
                         <Button bsStyle="primary" className="btn-block" onClick={this.onPush.bind(this)}>Push</Button>
-                        <TxButton className="btn btn-danger btn-block" contractName="TEST_CONTRACT">Execute contract</TxButton>
+                        <TxButton section="developer" className="btn btn-danger btn-block" contractName="TEST_CONTRACT">Execute contract</TxButton>
                         <TxButton
+                            section="developer"
                             className="btn btn-info btn-block"
                             contractName="TEST_CONTRACT"
                             confirm={{ icon: 'info', title: 'CONFIRM_TITLE', text: 'CONFIRM_TEXT', confirmButton: 'CONFIRM_BUTTON', cancelButton: 'CANCEL_BUTTON' }}
@@ -165,44 +168,45 @@ export default class extends React.Component<IDebugProps, IDebugState> {
                             Confirm button
                         </TxButton>
                         <TxButton
+                            section="developer"
                             className="btn btn-info btn-block"
                             page="page_default"
                         >
                             Confirm button
                         </TxButton>
                         <Button className="btn btn-info btn-block" onClick={this.onHistory.bind(this)}>History</Button>
-                        <TxButton className="btn btn-danger btn-block" contractName="NewEcosystem">CreateEcosystem</TxButton>
+                        <TxButton section="developer" className="btn btn-danger btn-block" contractName="NewEcosystem">CreateEcosystem</TxButton>
                         <div className="row">
                             <div className="col-md-4">
-                                <TxButton className="btn btn-danger btn-block" contractName="MainCondition">Contract 1</TxButton>
+                                <TxButton section="developer" className="btn btn-danger btn-block" contractName="MainCondition">Contract 1</TxButton>
                             </div>
                             <div className="col-md-4">
-                                <TxButton className="btn btn-danger btn-block" contractName="TEST_CONTRACT2">Contract 2</TxButton>
+                                <TxButton section="developer" className="btn btn-danger btn-block" contractName="TEST_CONTRACT2">Contract 2</TxButton>
                             </div>
                             <div className="col-md-4">
-                                <TxButton className="btn btn-danger btn-block" contractName="TEST_CONTRACT">Contract 3</TxButton>
+                                <TxButton section="developer" className="btn btn-danger btn-block" contractName="TEST_CONTRACT">Contract 3</TxButton>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-4">
-                                <TxButton className="btn btn-danger btn-block" contractName="MainCondition">Contract 1</TxButton>
+                                <TxButton section="developer" className="btn btn-danger btn-block" contractName="MainCondition">Contract 1</TxButton>
                             </div>
                             <div className="col-md-4">
-                                <TxButton className="btn btn-danger btn-block" contractName="TEST_CONTRACT2">Contract 2</TxButton>
+                                <TxButton section="developer" className="btn btn-danger btn-block" contractName="TEST_CONTRACT2">Contract 2</TxButton>
                             </div>
                             <div className="col-md-4">
-                                <TxButton className="btn btn-danger btn-block" contractName="TEST_CONTRACT">Contract 3</TxButton>
+                                <TxButton section="developer" className="btn btn-danger btn-block" contractName="TEST_CONTRACT">Contract 3</TxButton>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-4">
-                                <TxButton className="btn btn-danger btn-block" contractName="MainCondition">Contract 1</TxButton>
+                                <TxButton section="developer" className="btn btn-danger btn-block" contractName="MainCondition">Contract 1</TxButton>
                             </div>
                             <div className="col-md-4">
-                                <TxButton className="btn btn-danger btn-block" contractName="TEST_CONTRACT2">Contract 2</TxButton>
+                                <TxButton section="developer" className="btn btn-danger btn-block" contractName="TEST_CONTRACT2">Contract 2</TxButton>
                             </div>
                             <div className="col-md-4">
-                                <TxButton className="btn btn-danger btn-block" contractName="TEST_CONTRACT">Contract 3</TxButton>
+                                <TxButton section="developer" className="btn btn-danger btn-block" contractName="TEST_CONTRACT">Contract 3</TxButton>
                             </div>
                         </div>
                     </div>
