@@ -1,4 +1,5 @@
 node {
+    checkout scm
     stage('prepare') {
         sh "npm install -g yarn"
         sh "yarn install"
