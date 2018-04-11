@@ -1,6 +1,7 @@
 node {
     checkout scm
     stage('prepare') {
+        sh "CI=true"
         sh "yarn install"
     }
     stage('test') {
