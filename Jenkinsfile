@@ -1,13 +1,10 @@
 node {
     checkout scm
-    environment {
-        CI = true
-    }
     stage('prepare') {
         sh "yarn install"
     }
     stage('test') {
-        sh "yarn test"
+        sh "yarn test --ci"
     }
     stage('build') {
         sh "REACT_APP_API_URL=51.254.212.96:7001 yarn build"
