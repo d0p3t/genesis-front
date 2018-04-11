@@ -42,7 +42,7 @@ export const styles = {
     headerHeight: platform.select({ desktop: 28, web: 0 }),
     menuHeight: 40,
     toolbarHeight: 40,
-    mainColor: '#4c7dbd',
+    mainColor: '#D52B1E',
     toolColor: '#f3f3f3'
 };
 
